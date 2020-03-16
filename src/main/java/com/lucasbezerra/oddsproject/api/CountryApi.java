@@ -1,6 +1,8 @@
 package com.lucasbezerra.oddsproject.api;
 
+import com.lucasbezerra.oddsproject.exceptionHandler.CountryExceptionHandler;
 import com.lucasbezerra.oddsproject.model.Country;
+import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
 import com.lucasbezerra.oddsproject.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,28 @@ public class CountryApi {
 
     @Autowired
     CountryService countryService;
+
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> post(@RequestBody final Country country) {
+        return handleRquest(country);
+    }
+
+    @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> put(@RequestBody final Country country) {
+        return handleRquest(country);
+    }
+
+    private ResponseEntity<?> handleRquest(Country country) {
+        try {
+            countryService.saveCountry(country);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch(CountryExceptionHandler ex) {
+            return new ResponseEntity<>(GenericPayloadGenerator
+                    .getInstance()
+                    .buildResponseMessage("message",ex.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Country>> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
