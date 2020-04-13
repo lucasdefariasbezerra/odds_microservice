@@ -1,9 +1,9 @@
 package com.lucasbezerra.oddsproject.api;
 
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
-import com.lucasbezerra.oddsproject.model.Country;
+import com.lucasbezerra.oddsproject.model.Team;
 import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
-import com.lucasbezerra.oddsproject.service.CountryService;
+import com.lucasbezerra.oddsproject.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,25 +15,25 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/country")
-public class CountryApi {
+@RequestMapping("/api/team")
+public class TeamApi {
 
     @Autowired
-    CountryService countryService;
+    TeamService teamService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> post(@RequestBody final Country country) {
-        return handleRquest(country);
+    public ResponseEntity<?> post(@RequestBody final Team team) {
+        return handleRequest(team);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> put(@RequestBody final Country country) {
-        return handleRquest(country);
+    public ResponseEntity<?> put(@RequestBody final Team team) {
+        return handleRequest(team);
     }
 
-    private ResponseEntity<?> handleRquest(Country country) {
+    private ResponseEntity<?> handleRequest(Team team) {
         try {
-            countryService.save(country);
+            teamService.save(team);
             return new ResponseEntity<>(null, HttpStatus.OK);
         } catch(RestInsertionHandler ex) {
             return new ResponseEntity<>(GenericPayloadGenerator
@@ -44,16 +44,16 @@ public class CountryApi {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Country>> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
+    public ResponseEntity<List<Team>> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
                                              @RequestParam(required = false, name = "pageSize") Integer pageSize) {
-        List<Country> countryBody = countryService.get(pageNum, pageSize);
+        List<Team> countryBody = teamService.get(pageNum, pageSize);
         return new ResponseEntity<>(countryBody, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Country> getById(@PathVariable final Integer id) {
+    public ResponseEntity<Team> getById(@PathVariable final Integer id) {
         try {
-            return new ResponseEntity<>(countryService.getById(id), HttpStatus.OK);
+            return new ResponseEntity<>(teamService.getById(id), HttpStatus.OK);
         } catch (EntityNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
