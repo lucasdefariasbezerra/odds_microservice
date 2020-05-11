@@ -1,5 +1,7 @@
 package com.lucasbezerra.oddsproject.model;
 
+import com.lucasbezerra.oddsproject.model.dto.CountryDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -51,5 +53,9 @@ public class Country {
 
     public void setThreeLetterCode(String threeLetterCode) {
         this.threeLetterCode = threeLetterCode;
+    }
+
+    public CountryDTO toDTO() {
+        return new CountryDTO(id, name, region, threeLetterCode);
     }
 }

@@ -44,18 +44,22 @@ public class CountryApi {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Country>> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
+    public ResponseEntity<?> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
                                              @RequestParam(required = false, name = "pageSize") Integer pageSize) {
-        List<Country> countryBody = countryService.get(pageNum, pageSize);
-        return new ResponseEntity<>(countryBody, HttpStatus.OK);
+        if (pageNum != null && pageSize != null)
+            return new ResponseEntity<>(countryService.getPaginatedCountries(pageNum, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(countryService.get(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Country> getById(@PathVariable final Integer id) {
+    public ResponseEntity<?> getById(@PathVariable final Integer id) {
         try {
             return new ResponseEntity<>(countryService.getById(id), HttpStatus.OK);
         } catch (EntityNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            String content = "id " + id + " was not found";
+            return new ResponseEntity<>(GenericPayloadGenerator
+                    .getInstance()
+                    .buildResponseMessage("message",content), HttpStatus.NOT_FOUND);
         }
     }
 }
