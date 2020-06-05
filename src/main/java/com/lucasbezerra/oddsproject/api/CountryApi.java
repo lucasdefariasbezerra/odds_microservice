@@ -47,7 +47,7 @@ public class CountryApi {
     public ResponseEntity<?> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
                                              @RequestParam(required = false, name = "pageSize") Integer pageSize) {
         if (pageNum != null && pageSize != null)
-            return new ResponseEntity<>(countryService.getPaginatedCountries(pageNum, pageSize), HttpStatus.OK);
+            return new ResponseEntity<>(countryService.getPaginated(pageNum, pageSize), HttpStatus.OK);
         return new ResponseEntity<>(countryService.get(), HttpStatus.OK);
     }
 

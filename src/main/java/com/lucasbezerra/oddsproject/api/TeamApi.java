@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -44,18 +43,22 @@ public class TeamApi {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Team>> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
+    public ResponseEntity<?> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
                                              @RequestParam(required = false, name = "pageSize") Integer pageSize) {
-        List<Team> countryBody = teamService.get(pageNum, pageSize);
-        return new ResponseEntity<>(countryBody, HttpStatus.OK);
+        if (pageNum != null && pageSize != null)
+            return new ResponseEntity<>(teamService.getPaginated(pageNum, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(teamService.get(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> getById(@PathVariable final Integer id) {
+    public ResponseEntity<?> getById(@PathVariable final Integer id) {
         try {
             return new ResponseEntity<>(teamService.getById(id), HttpStatus.OK);
         } catch (EntityNotFoundException ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            String content = "id " + id + " was not found";
+            return new ResponseEntity<>(GenericPayloadGenerator
+                    .getInstance()
+                    .buildResponseMessage("message",content), HttpStatus.NOT_FOUND);
         }
     }
 }

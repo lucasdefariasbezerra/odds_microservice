@@ -1,5 +1,8 @@
 package com.lucasbezerra.oddsproject.model;
 
+import com.lucasbezerra.oddsproject.model.dto.SportDTO;
+import com.lucasbezerra.oddsproject.model.dto.TeamDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -42,5 +45,9 @@ public class Team {
 
     public void setSport(Sport sport) {
         this.sport = sport;
+    }
+
+    public TeamDTO toDTO() {
+        return new TeamDTO(id, name, new SportDTO(sport.getId(), sport.getName()));
     }
 }

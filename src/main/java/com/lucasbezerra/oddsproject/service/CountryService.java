@@ -3,6 +3,7 @@ package com.lucasbezerra.oddsproject.service;
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
 import com.lucasbezerra.oddsproject.model.Country;
 import com.lucasbezerra.oddsproject.model.dto.CountryDTO;
+import com.lucasbezerra.oddsproject.model.dto.CountryPageDTO;
 import com.lucasbezerra.oddsproject.model.dto.PageDTO;
 import com.lucasbezerra.oddsproject.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -34,13 +34,12 @@ public class CountryService {
         return countryRepository.findAll();
     }
 
-    public PageDTO getPaginatedCountries(int pageNum, int pageSize) {
+    public PageDTO<CountryDTO, Page<Country>> getPaginated(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         Page<Country> page = countryRepository.findAll(pageable);
-        List<CountryDTO> items = page.get()
-                .map(Country::toDTO)
-                .collect(Collectors.toList());
-        return new PageDTO(page.getTotalPages(), items);
+        PageDTO<CountryDTO, Page<Country>> pageDTO = new CountryPageDTO();
+        pageDTO.mapPageToDTO(page);
+        return pageDTO;
     }
 
     public Country getById(Integer id) throws EntityNotFoundException {

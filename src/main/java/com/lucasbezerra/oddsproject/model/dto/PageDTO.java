@@ -3,14 +3,14 @@ package com.lucasbezerra.oddsproject.model.dto;
 import java.util.List;
 import java.util.Objects;
 
-public class PageDTO {
+public abstract class PageDTO<T, P> {
     private int total;
-    private List<CountryDTO> items;
+    private List<T> items;
 
     public PageDTO() {
     }
 
-    public PageDTO(int total, List<CountryDTO> items) {
+    public PageDTO(int total, List<T> items) {
         this.total = total;
         this.items = items;
     }
@@ -23,11 +23,11 @@ public class PageDTO {
         this.total = total;
     }
 
-    public List<CountryDTO> getItems() {
+    public List<T> getItems() {
         return items;
     }
 
-    public void setItems(List<CountryDTO> items) {
+    public void setItems(List<T> items) {
         this.items = items;
     }
 
@@ -52,4 +52,6 @@ public class PageDTO {
                 ", items=" + items +
                 '}';
     }
+
+    public abstract void mapPageToDTO(P paginator);
 }
