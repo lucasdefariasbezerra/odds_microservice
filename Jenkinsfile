@@ -17,11 +17,7 @@ pipeline {
         stage('deployment') {
             steps {
                sshagent(['1db8cc9b-65c6-4edb-93fb-67125fcdf43f']) {
-                  sh """
-                   ssh -o StrictHostKeyChecking=no ec2-user@${env.ODDS_ENV} << EOF
-                   odds-micro.sh DEPLOY
-                   exit
-                  EOF"""
+                  sh "ssh -o StrictHostKeyChecking=no ec2-user@${env.ODDS_ENV} nohup odds-micro.sh DEPLOY > run.log &"
                }
             }
         }
