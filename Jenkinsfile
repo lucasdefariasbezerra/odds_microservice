@@ -19,7 +19,7 @@ pipeline {
                sshagent(['1db8cc9b-65c6-4edb-93fb-67125fcdf43f']) {
                   sh "ssh -o StrictHostKeyChecking=no ec2-user@${env.ODDS_ENV} nohup odds-micro.sh DEPLOY &"
                   retry (3) {
-                    sleep 10
+                    sleep 5
                     sh "ssh -o StrictHostKeyChecking=no ec2-user@${env.ODDS_ENV} odds-micro.sh CHECK"
                   }
                }
