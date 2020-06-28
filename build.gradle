@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+    id 'org.flywaydb.flyway' version '5.2.4'
 }
 
 group = 'com.lucasbezerra'
@@ -20,8 +21,16 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+    implementation 'org.flywaydb:flyway-gradle-plugin:5.2.4'
 }
 
 test {
 	useJUnitPlatform()
+}
+
+flyway {
+    url = '${ODDS_DB_URL}'
+    user = '${ODDS_DB_USER}'
+    password = '${ODDS_DB_PASSWORD}'
+    schemas = ['odds']
 }
