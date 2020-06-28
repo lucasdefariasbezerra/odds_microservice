@@ -2,7 +2,7 @@ CREATE TABLE country (
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(255) NOT NULL,
   region varchar(100) DEFAULT NULL,
-  threeLetterCode varchar(255) DEFAULT NULL,
+  three_letter_code varchar(255) DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY name (name)
 );

@@ -17,7 +17,7 @@ public class Country {
     @Column(name = "region")
     private String region;
 
-    @Column(name = "threeLetterCode")
+    @Column(name = "three_letter_code")
     private String threeLetterCode;
 
     public Country() {
