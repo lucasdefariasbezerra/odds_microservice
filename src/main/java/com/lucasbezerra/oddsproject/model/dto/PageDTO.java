@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class PageDTO<T, P> {
-    private int total;
+    private long total;
     private List<T> items;
 
     public PageDTO() {
@@ -15,11 +15,11 @@ public abstract class PageDTO<T, P> {
         this.items = items;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 

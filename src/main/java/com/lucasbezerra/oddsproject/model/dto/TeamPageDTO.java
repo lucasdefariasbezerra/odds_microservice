@@ -15,6 +15,6 @@ public class TeamPageDTO extends PageDTO<TeamDTO, Page<Team>>  {
                 .map(Team::toDTO)
                 .collect(Collectors.toList());
         this.setItems(items);
-        this.setTotal(paginator.getTotalPages());
+        this.setTotal(paginator.getTotalElements());
     }
 }
