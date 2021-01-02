@@ -1,5 +1,7 @@
 package com.lucasbezerra.oddsproject.model.dto;
 
+import com.lucasbezerra.oddsproject.model.Country;
+
 import java.util.Objects;
 
 public class CountryDTO {
@@ -16,6 +18,13 @@ public class CountryDTO {
         this.name = name;
         this.region = region;
         this.threeLetterCode = threeLetterCode;
+    }
+
+    public CountryDTO(Country country) {
+        this.id = country.getId();
+        this.name = country.getName();
+        this.region = country.getRegion();
+        this.threeLetterCode = country.getThreeLetterCode();
     }
 
     public int getId() {

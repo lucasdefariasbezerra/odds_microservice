@@ -1,5 +1,6 @@
 package com.lucasbezerra.oddsproject.model;
 
+import com.lucasbezerra.oddsproject.model.dto.CountryDTO;
 import com.lucasbezerra.oddsproject.model.dto.SportDTO;
 import com.lucasbezerra.oddsproject.model.dto.TeamDTO;
 
@@ -19,6 +20,10 @@ public class Team {
     @ManyToOne
     @JoinColumn(name="sport_id", nullable = false)
     private Sport sport;
+
+    @ManyToOne
+    @JoinColumn(name="country_id", nullable = false)
+    private Country country;
 
     public Team() {
     }
@@ -47,7 +52,15 @@ public class Team {
         this.sport = sport;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     public TeamDTO toDTO() {
-        return new TeamDTO(id, name, new SportDTO(sport.getId(), sport.getName()));
+        return new TeamDTO(id, name, new SportDTO(sport), new CountryDTO(country));
     }
 }

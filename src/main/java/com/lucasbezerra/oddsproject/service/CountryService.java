@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -30,8 +31,12 @@ public class CountryService {
         }
     }
 
-    public List<Country> get() {
-        return countryRepository.findAll();
+    public List<CountryDTO> get() {
+        return countryRepository.
+                findAllByOrderByNameAsc()
+                .stream()
+                .map(CountryDTO::new)
+                .collect(Collectors.toList());
     }
 
     public PageDTO<CountryDTO, Page<Country>> getPaginated(int pageNum, int pageSize) {

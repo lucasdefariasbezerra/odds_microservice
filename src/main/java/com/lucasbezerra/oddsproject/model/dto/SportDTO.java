@@ -1,5 +1,7 @@
 package com.lucasbezerra.oddsproject.model.dto;
 
+import com.lucasbezerra.oddsproject.model.Sport;
+
 import java.util.Objects;
 
 public class SportDTO {
@@ -12,6 +14,11 @@ public class SportDTO {
     public SportDTO(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public SportDTO(Sport sport) {
+        this.id = sport.getId();
+        this.name = sport.getName();
     }
 
     public Integer getId() {

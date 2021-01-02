@@ -25,6 +25,8 @@ INSERT INTO country VALUES
 (15,'Denmark','Europe','DEN'),
 (16,'Ecuador','South America','ECU'),
 (17,'Egypt','Africa','EGY'),
+(58, 'England', 'Europe', 'ENG'),
+(59, 'Scotland', 'Europe', 'SCT'),
 (18,'Finland','Europe','FIN'),
 (19,'France','Europe','FRA'),
 (20,'Germany','Europe','GER'),
