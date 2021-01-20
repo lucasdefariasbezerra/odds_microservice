@@ -2,16 +2,24 @@ package com.lucasbezerra.oddsproject.api;
 
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
 import com.lucasbezerra.oddsproject.model.Team;
+import com.lucasbezerra.oddsproject.model.dto.TeamUploadDTO;
 import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
 import com.lucasbezerra.oddsproject.service.TeamService;
+import com.lucasbezerra.oddsproject.service.utils.CsvUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.io.IOException;
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping("/api/team")
@@ -23,6 +31,16 @@ public class TeamApi {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> post(@RequestBody final Team team) {
         return handleRequest(team);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/upload", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        boolean status = teamService.executeTeamUpload(file);
+        String message = status ? "message successfully uploaded" : "error during upload try again later";
+        return new ResponseEntity<>(GenericPayloadGenerator
+                    .getInstance()
+                    .buildResponseMessage("message",message), status ? HttpStatus.OK: HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

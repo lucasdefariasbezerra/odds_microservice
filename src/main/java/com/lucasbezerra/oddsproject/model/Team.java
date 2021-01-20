@@ -3,6 +3,7 @@ package com.lucasbezerra.oddsproject.model;
 import com.lucasbezerra.oddsproject.model.dto.CountryDTO;
 import com.lucasbezerra.oddsproject.model.dto.SportDTO;
 import com.lucasbezerra.oddsproject.model.dto.TeamDTO;
+import com.lucasbezerra.oddsproject.model.dto.TeamUploadDTO;
 
 import javax.persistence.*;
 
@@ -26,6 +27,18 @@ public class Team {
     private Country country;
 
     public Team() {
+    }
+
+    public Team(TeamUploadDTO teamUploadDTO) {
+        this.name = teamUploadDTO.getName();
+
+        Sport sportKey = new Sport();
+        sportKey.setId(teamUploadDTO.getSportId());
+        this.sport = sportKey;
+
+        Country countryKey = new Country();
+        countryKey.setId(teamUploadDTO.getCountryId());
+        this.country = countryKey;
     }
 
     public Integer getId() {
