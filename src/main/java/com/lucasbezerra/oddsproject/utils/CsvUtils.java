@@ -1,4 +1,4 @@
-package com.lucasbezerra.oddsproject.service.utils;
+package com.lucasbezerra.oddsproject.utils;
 
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;

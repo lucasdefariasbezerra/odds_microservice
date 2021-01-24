@@ -6,21 +6,17 @@ import com.lucasbezerra.oddsproject.model.dto.PageDTO;
 import com.lucasbezerra.oddsproject.model.dto.TeamDTO;
 import com.lucasbezerra.oddsproject.model.dto.TeamPageDTO;
 import com.lucasbezerra.oddsproject.model.dto.TeamUploadDTO;
-import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
 import com.lucasbezerra.oddsproject.repository.TeamRepository;
-import com.lucasbezerra.oddsproject.service.utils.CsvUtils;
+import com.lucasbezerra.oddsproject.utils.CsvUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Service

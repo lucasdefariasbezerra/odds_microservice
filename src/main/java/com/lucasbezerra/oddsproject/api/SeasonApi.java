@@ -1,39 +1,38 @@
 package com.lucasbezerra.oddsproject.api;
 
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
-import com.lucasbezerra.oddsproject.model.Country;
+import com.lucasbezerra.oddsproject.model.Season;
 import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
-import com.lucasbezerra.oddsproject.service.CountryService;
+import com.lucasbezerra.oddsproject.service.SeasonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api/country")
-public class CountryApi {
+@RequestMapping("/api/season")
+public class SeasonApi {
 
     @Autowired
-    CountryService countryService;
+    SeasonService seasonService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> post(@RequestBody final Country country) {
-        return handleRequest(country);
+    public ResponseEntity<?> post(@RequestBody final Season season) {
+        return handleRequest(season);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> put(@RequestBody final Country country) {
-        return handleRequest(country);
+    public ResponseEntity<?> put(@RequestBody final Season season) {
+        return handleRequest(season);
     }
 
-    private ResponseEntity<?> handleRequest(Country country) {
+    private ResponseEntity<?> handleRequest(Season season) {
         try {
-            countryService.save(country);
+            seasonService.save(season);
             return new ResponseEntity<>(null, HttpStatus.OK);
         } catch(RestInsertionHandler ex) {
             return new ResponseEntity<>(GenericPayloadGenerator
@@ -45,16 +44,16 @@ public class CountryApi {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
-                                             @RequestParam(required = false, name = "pageSize") Integer pageSize) {
+                                 @RequestParam(required = false, name = "pageSize") Integer pageSize) {
         if (pageNum != null && pageSize != null)
-            return new ResponseEntity<>(countryService.getPaginated(pageNum, pageSize), HttpStatus.OK);
-        return new ResponseEntity<>(countryService.get(), HttpStatus.OK);
+            return ResponseEntity.badRequest().body(null);
+        return new ResponseEntity<>(seasonService.get(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getById(@PathVariable final Integer id) {
         try {
-            return new ResponseEntity<>(countryService.getById(id), HttpStatus.OK);
+            return new ResponseEntity<>(seasonService.getById(id), HttpStatus.OK);
         } catch (EntityNotFoundException ex) {
             String content = "id " + id + " was not found";
             return new ResponseEntity<>(GenericPayloadGenerator
