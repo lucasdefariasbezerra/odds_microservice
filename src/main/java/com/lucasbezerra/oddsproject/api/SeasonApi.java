@@ -1,7 +1,7 @@
 package com.lucasbezerra.oddsproject.api;
 
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
-import com.lucasbezerra.oddsproject.model.Season;
+import com.lucasbezerra.oddsproject.model.dto.SeasonRequestDTO;
 import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
 import com.lucasbezerra.oddsproject.service.SeasonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,16 @@ public class SeasonApi {
     SeasonService seasonService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> post(@RequestBody final Season season) {
+    public ResponseEntity<?> post(@RequestBody final SeasonRequestDTO season) {
         return handleRequest(season);
     }
 
     @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> put(@RequestBody final Season season) {
+    public ResponseEntity<?> put(@RequestBody final SeasonRequestDTO season) {
         return handleRequest(season);
     }
 
-    private ResponseEntity<?> handleRequest(Season season) {
+    private ResponseEntity<?> handleRequest(SeasonRequestDTO season) {
         try {
             seasonService.save(season);
             return new ResponseEntity<>(null, HttpStatus.OK);
@@ -46,8 +46,13 @@ public class SeasonApi {
     public ResponseEntity<?> get(@RequestParam(required = false, name = "pageNum") Integer pageNum,
                                  @RequestParam(required = false, name = "pageSize") Integer pageSize) {
         if (pageNum != null && pageSize != null)
-            return ResponseEntity.badRequest().body(null);
+            return new ResponseEntity<>(seasonService.getPaginated(pageNum, pageSize), HttpStatus.OK);
         return new ResponseEntity<>(seasonService.get(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/tournment" ,produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTournment() {
+        return new ResponseEntity<>(seasonService.getAllTournments(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)

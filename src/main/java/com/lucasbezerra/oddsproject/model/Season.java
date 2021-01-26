@@ -1,5 +1,8 @@
 package com.lucasbezerra.oddsproject.model;
 
+import com.lucasbezerra.oddsproject.model.dto.SeasonDTO;
+import com.lucasbezerra.oddsproject.model.dto.SeasonRequestDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +10,7 @@ import javax.persistence.*;
 public class Season {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name_right")
@@ -26,7 +29,16 @@ public class Season {
     @JoinColumn(name="tournment_id", nullable = false)
     private Tournment tournment;
 
-    public Season() {
+    public Season() {}
+
+    public Season(SeasonRequestDTO seasonPayload) {
+        Tournment tournment = new Tournment();
+        this.setNameRight(seasonPayload.getNameRight());
+        this.setTournmentType(seasonPayload.getType());
+        this.setSeasonStart(seasonPayload.getSeasonStart());
+        this.setSeasonEnd(seasonPayload.getSeasonEnd());
+        tournment.setId(seasonPayload.getTournment().getId());
+        this.setTournment(tournment);
     }
 
     public Integer getId() {
@@ -75,5 +87,9 @@ public class Season {
 
     public void setTournment(Tournment tournment) {
         this.tournment = tournment;
+    }
+
+    public SeasonDTO toDTO() {
+        return new SeasonDTO(this);
     }
 }
