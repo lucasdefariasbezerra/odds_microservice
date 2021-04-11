@@ -1,6 +1,7 @@
 package com.lucasbezerra.oddsproject.api;
 
 import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
+import com.lucasbezerra.oddsproject.model.dto.MatchesPayloadDTO;
 import com.lucasbezerra.oddsproject.model.dto.SeasonRequestDTO;
 import com.lucasbezerra.oddsproject.payloadManager.GenericPayloadGenerator;
 import com.lucasbezerra.oddsproject.service.SeasonService;
@@ -11,14 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.text.ParseException;
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/season")
 public class SeasonApi {
 
+
     @Autowired
-    SeasonService seasonService;
+    private SeasonService seasonService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> post(@RequestBody final SeasonRequestDTO season) {
@@ -64,6 +69,19 @@ public class SeasonApi {
             return new ResponseEntity<>(GenericPayloadGenerator
                     .getInstance()
                     .buildResponseMessage("message",content), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/{id}/matches", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addMatches(@PathVariable final Integer id,
+                                        @RequestBody List<MatchesPayloadDTO> matchesPayloadDTO) {
+        try {
+            seasonService.addMatches(id, matchesPayloadDTO);
+            return ResponseEntity.ok(null);
+        } catch (RestInsertionHandler | ParseException ex) {
+           return ResponseEntity.badRequest().body(GenericPayloadGenerator
+                   .getInstance()
+                   .buildResponseMessage("error", ex.getMessage()));
         }
     }
 }
