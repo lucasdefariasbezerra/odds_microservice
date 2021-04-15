@@ -64,8 +64,9 @@ public class SeasonService {
         return pageDTO;
     }
 
-    public Season getById(Integer id) throws EntityNotFoundException {
-        return seasonRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public SeasonDTO getById(Integer id) throws EntityNotFoundException {
+        Season season = seasonRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return new SeasonDTO(season);
     }
 
     public List<Tournment> getAllTournments() {
