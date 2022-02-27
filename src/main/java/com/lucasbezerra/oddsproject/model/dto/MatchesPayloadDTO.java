@@ -1,6 +1,11 @@
 package com.lucasbezerra.oddsproject.model.dto;
 
+import com.lucasbezerra.oddsproject.model.Match;
+import com.lucasbezerra.oddsproject.model.SeasonGroup;
+import com.lucasbezerra.oddsproject.utils.DateUtils;
+
 public class MatchesPayloadDTO {
+    private int id;
     private int seasonId;
     private String groupDesc;
     private String groupKey;
@@ -25,6 +30,28 @@ public class MatchesPayloadDTO {
         this.scoreAway = scoreAway;
         this.round = round;
         this.date = date;
+    }
+
+    public MatchesPayloadDTO (Match match) {
+        SeasonGroup seasonGroup = match.getSeasonGroup();
+        this.id = match.getId();
+        this.seasonId = seasonGroup.getSeason().getId();
+        this.groupDesc = seasonGroup.getDesc();
+        this.groupKey = seasonGroup.getGroupKey();
+        this.teamHome = match.getTeamHome().getName();
+        this.teamAway = match.getTeamAway().getName();
+        this.scoreHome = match.getScoreHome();
+        this.scoreAway = match.getScoreAway();
+        this.round = match.getRound();
+        this.date = DateUtils.convertDateToString(match.getMatchDate(), "dd/MM/yyyy");
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getSeasonId() {

@@ -1,5 +1,7 @@
 package com.lucasbezerra.oddsproject.model;
 
+import com.lucasbezerra.oddsproject.model.dto.MatchesPayloadDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -121,5 +123,9 @@ public class Match {
                 ", matchDate=" + matchDate +
                 ", round=" + round +
                 '}';
+    }
+
+    public MatchesPayloadDTO toDTO() {
+        return new MatchesPayloadDTO(this);
     }
 }

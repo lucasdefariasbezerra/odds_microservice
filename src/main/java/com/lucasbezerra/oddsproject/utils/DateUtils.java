@@ -21,9 +21,16 @@ public class DateUtils {
         return localDate.getYear();
     }
 
-    public static long convertDateStringToMilli(String dateString) throws ParseException {
-        final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+    public static long convertDateStringToMilli(String dateString, String dateFormat) throws ParseException {
+        final SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
         format.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
         return format.parse(dateString).getTime();
+    }
+
+    public static String convertDateToString(Long milli, String dateFormat) {
+        Date date = getDateFromMilli(milli);
+        final SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+        format.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
+        return format.format(date);
     }
 }

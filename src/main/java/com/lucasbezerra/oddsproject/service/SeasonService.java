@@ -94,7 +94,7 @@ public class SeasonService {
                     .findOneByName(matchPayload.getTeamAway())
                     .orElseThrow(() -> new RestInsertionHandler("team " + matchPayload.getTeamAway() + " not found"));
 
-            long dateInMilli = DateUtils.convertDateStringToMilli(matchPayload.getDate());
+            long dateInMilli = DateUtils.convertDateStringToMilli(matchPayload.getDate(), "dd/MM/yyyy");
             Match match = new Match(teamHome, teamAway, group, dateInMilli, matchPayload.getRound());
             matchRepository.save(match);
             logger.info("Match {} was inserted", match);
