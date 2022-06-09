@@ -54,4 +54,8 @@ public abstract class PageDTO<T, P> {
     }
 
     public abstract void mapPageToDTO(P paginator);
+
+    public void mapPageToDTO(List<T> items, int totalItems, int pageSize) {
+        return;
+    }
 }

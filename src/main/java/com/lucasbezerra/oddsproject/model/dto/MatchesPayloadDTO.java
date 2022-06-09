@@ -2,6 +2,7 @@ package com.lucasbezerra.oddsproject.model.dto;
 
 import com.lucasbezerra.oddsproject.model.Match;
 import com.lucasbezerra.oddsproject.model.SeasonGroup;
+import com.lucasbezerra.oddsproject.model.constants.MatchEnum;
 import com.lucasbezerra.oddsproject.utils.DateUtils;
 
 public class MatchesPayloadDTO {
@@ -15,6 +16,7 @@ public class MatchesPayloadDTO {
     private int scoreAway;
     private int round;
     private String date;
+    private int processed;
 
     public MatchesPayloadDTO() {
     }
@@ -44,6 +46,20 @@ public class MatchesPayloadDTO {
         this.scoreAway = match.getScoreAway();
         this.round = match.getRound();
         this.date = DateUtils.convertDateToString(match.getMatchDate(), "dd/MM/yyyy");
+    }
+
+    public MatchesPayloadDTO (Object[] matchRow) {
+        this.id = (int) matchRow[MatchEnum.ID.getValue()];
+        this.seasonId = (int) matchRow[MatchEnum.SEASON_ID.getValue()];
+        this.groupDesc = (String) matchRow[MatchEnum.DESCRIPTION.getValue()];
+        this.groupKey = (String) matchRow[MatchEnum.GROUP_KEY.getValue()];
+        this.teamHome = (String) matchRow[MatchEnum.TEAM_HOME.getValue()];
+        this.teamAway = (String) matchRow[MatchEnum.TEAM_AWAY.getValue()];
+        this.scoreHome = (int) matchRow[MatchEnum.SCORE_HOME.getValue()];
+        this.scoreAway = (int) matchRow[MatchEnum.SCORE_AWAY.getValue()];
+        this.round = (int) matchRow[MatchEnum.ROUND.getValue()];
+        this.date = DateUtils.convertDateToString(Long.parseLong(String.valueOf(matchRow[MatchEnum.MATCH_DATE.getValue()])), "dd/MM/yyyy");
+        this.processed = (int) matchRow[MatchEnum.PROCESSED.getValue()];
     }
 
     public int getId() {
@@ -124,5 +140,13 @@ public class MatchesPayloadDTO {
 
     public void setGroupKey(String groupKey) {
         this.groupKey = groupKey;
+    }
+
+    public int getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(int processed) {
+        this.processed = processed;
     }
 }

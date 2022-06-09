@@ -17,4 +17,10 @@ public class MatchPageDTO extends PageDTO<MatchesPayloadDTO, Page<Match>> {
         this.setTotal(paginator.getTotalElements());
 
     }
+
+    public void mapPageToDTO(List<MatchesPayloadDTO> items, int totalItems, int pageSize) {
+        this.setItems(items);
+        this.setTotal(totalItems);
+    }
+
 }

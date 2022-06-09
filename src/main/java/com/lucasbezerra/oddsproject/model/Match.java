@@ -35,6 +35,9 @@ public class Match {
     @Column(name = "round")
     private Integer round;
 
+    @Column(name ="processed")
+    private Integer processed;
+
     public Match() {
     }
 
@@ -112,16 +115,26 @@ public class Match {
         this.round = round;
     }
 
+    public Integer getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(Integer processed) {
+        this.processed = processed;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
-                "teamHome=" + teamHome.getName() +
-                ", teamAway=" + teamAway.getName() +
-                ", seasonGroup=" + seasonGroup.getGroupKey() +
+                "id=" + id +
+                ", teamHome=" + teamHome +
+                ", teamAway=" + teamAway +
+                ", seasonGroup=" + seasonGroup +
                 ", scoreHome=" + scoreHome +
                 ", scoreAway=" + scoreAway +
                 ", matchDate=" + matchDate +
                 ", round=" + round +
+                ", processed=" + processed +
                 '}';
     }
 

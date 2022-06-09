@@ -1,21 +1,18 @@
 package com.lucasbezerra.oddsproject.service;
 
-import com.lucasbezerra.oddsproject.exceptionHandler.RestInsertionHandler;
 import com.lucasbezerra.oddsproject.model.Match;
 import com.lucasbezerra.oddsproject.model.dto.MatchPageDTO;
 import com.lucasbezerra.oddsproject.model.dto.MatchesPayloadDTO;
 import com.lucasbezerra.oddsproject.model.dto.PageDTO;
+import com.lucasbezerra.oddsproject.model.dto.UpdateMatchesDTO;
 import com.lucasbezerra.oddsproject.repository.MatchRepository;
 import com.lucasbezerra.oddsproject.utils.CsvUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.text.ParseException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,11 +55,30 @@ public class MatchService {
         return mappedMatches;
     }
 
-    public PageDTO getPaginated(int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        Page<Match> page = matchRepository.findAll(pageable);
+    public PageDTO getPaginated(int pageNum, int pageSize, int seasonId) {
+        int offset = pageNum * pageSize;
+        int totalItems = matchRepository.countBySeasonGroupSeasonId(seasonId);
+
+        Map<String, Object> paramList = new HashMap<>();
+        paramList.put("ss.id", seasonId);
+
+        List<MatchesPayloadDTO> items = matchRepository.searchMatches(paramList, offset, pageSize);
+
         PageDTO<MatchesPayloadDTO, Page<Match>> pageDTO = new MatchPageDTO();
-        pageDTO.mapPageToDTO(page);
+        pageDTO.mapPageToDTO(items, totalItems, pageSize);
         return pageDTO;
+    }
+
+    public void updateMatchesScore (List<UpdateMatchesDTO> matchesList) throws Exception {
+        List<Match> toUpdate = new ArrayList<>();
+        for (UpdateMatchesDTO current : matchesList) {
+            matchRepository.findById(current.getId()).ifPresent(entity -> {
+                entity.setScoreHome(current.getScoreHome());
+                entity.setScoreAway(current.getScoreAway());
+                entity.setProcessed(1);
+                toUpdate.add(entity);
+            });
+        }
+        matchRepository.saveAll(toUpdate);
     }
 }
