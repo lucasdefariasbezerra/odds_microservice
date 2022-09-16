@@ -25,13 +25,10 @@
 
 # Instalation guide
 
-In order to deploy the microservice is necessary to have the Java 11 as well as docker, since the microvervice will run under a container. 
-So please make sure you have these two items installed in your machine.
+In order to deploy teams ms you should have installed Java 11 as well as docker. For debugging purposes, please install an IDE of your choice.
+Intellij community is enough for debugging teams microservice codebase.
 
-For debugging purposes, please install an IDE of your choice. Intellij community is a enough for debugger teams microservice codebase.
-
-After dowloading and installing the according softawre, please run the following commands to setup the database that will sarve 
-the Teams microservice.
+After dowloading and installing the according tools, you run the following commands to setup the database.
 
 ```bash
 docker pull mysql:latest
@@ -41,8 +38,8 @@ docker exec -it mysql-container mysql -uroot -ppassword123 -e "create database t
 docker exec -it mysql-container mysql -uroot -ppassword123 -e "CREATE USER 'user_odds'@'%' IDENTIFIED BY 'masterkey'; GRANT ALL PRIVILEGES ON * . * TO 'user_odds'@'%'; FLUSH PRIVILEGES;"
 ```
 
-After the database setup you need to run the command to generate the teams microservice jar file to be use in the respective image building.
-Hint: run this command in the Intellij integrated terminal
+After the database setup, you need to run the command for generating the teams microservice jar file to be used in the respective image building.
+Hint: run this command inside Intellij integrated terminal
 
 ```bash
 chmod +x gradlew && ./gradlew build -x test
