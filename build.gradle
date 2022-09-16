@@ -33,5 +33,5 @@ flyway {
     url = '${ODDS_DB_URL}'
     user = '${ODDS_DB_USER}'
     password = '${ODDS_DB_PASSWORD}'
-    schemas = ['odds']
+    schemas = ['teams_db']
 }
